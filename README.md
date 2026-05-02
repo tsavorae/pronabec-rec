@@ -29,6 +29,12 @@ go run . history --limit 10000
 ```
 ---
 
+Obtener benchmark
+```bash
+go run . benchmark  --sinteticos 100000 --perfiles-rec 5000 --max-workers 16
+```
+---
+
 Verificar en Promela
 
 ```bash
