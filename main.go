@@ -39,7 +39,7 @@ Uso:
   go run . expand     [--input FILE] [--target N] [--workers W]  Expande con sintéticos
   go run . history    [--perfiles FILE] [--programas FILE] [--limit N]
   go run . preprocess [--programas FILE] [--perfiles FILE] [--output FILE] [--workers W]
-  go run . benchmark  [--perfiles FILE] [--programas FILE] [--sinteticos N] [--workers W]
+  go run . benchmark  [--perfiles FILE] [--programas FILE] [--sinteticos N] [--max-workers W]
 
 Flujo completo:
   go run . scrape
@@ -47,5 +47,5 @@ Flujo completo:
   go run . expand     --input ./datasets/ds_perfiles_credito.csv --target 1000000
   go run . history    --limit 10000
   go run . preprocess --workers 8
-  go run . benchmark  --sinteticos 100000 --perfiles-rec 5000 --workers 8`)
+  go run . benchmark  --sinteticos 100000 --perfiles-rec 5000 --max-workers 16`)
 }
