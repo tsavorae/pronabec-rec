@@ -20,8 +20,6 @@ func main() {
 		runExpand(os.Args[2:])
 	case "history":
 		runHistory(os.Args[2:])
-	case "preprocess":
-		runPreprocess(os.Args[2:])
 	case "benchmark":
 		runBenchmark(os.Args[2:])
 	default:
