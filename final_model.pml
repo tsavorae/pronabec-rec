@@ -1,59 +1,55 @@
-#define N 2 
-int wg = 0;             
-int done = 0;            
+#define N 2
 
-chan out = [N] of { int }; 
+int wg = 0;
+bool done = false;
 
-inline lock() {
-    atomic { wg >= 0 -> skip }
-}
+chan out = [N] of { int };
 
-inline unlock() {
-    atomic { wg >= 0 -> skip }
-}
-
-proctype worker(int id) {
-    atomic {
-        wg = wg - 1
-    }
-    
+proctype worker(int id)
+{
     out!id;
-    
+
     atomic {
-        wg = wg - 1;
+        wg--;
+
         if
-            :: wg == 0 -> done = 1
-            :: else -> skip
+        :: wg == 0 ->
+            done = true
+        :: else ->
+            skip
         fi
     }
 }
 
-
-proctype main() {
+proctype main()
+{
     int i;
-    int count = 0;
-    
-    wg = N;
-    
+
+    atomic {
+        wg = N
+    }
+
     i = 0;
     do
     :: i < N ->
         run worker(i);
-        i = i + 1
-    :: else -> break
+        i++
+    :: else ->
+        break
     od;
-    
+
     i = 0;
     do
     :: i < N ->
         out?_;
-        i = i + 1
-    :: else -> break
+        i++
+    :: else ->
+        break
     od;
-    
+
     do
-    :: done == 0 -> skip
-    :: else -> break
+    :: done -> break
+    :: else -> skip
     od
 }
 
@@ -61,15 +57,14 @@ init {
     run main()
 }
 
-
-ltl no_deadlock {
-    <> (done == 1)
-}
-
 ltl no_negative {
     [] (wg >= 0)
 }
 
+ltl eventually_done {
+    <> (done)
+}
+
 ltl all_done {
-    <> (wg == 0 && done == 1)
+    <> (wg == 0 && done)
 }
